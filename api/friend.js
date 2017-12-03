@@ -6,56 +6,53 @@
 	var router = express.Router();
 
 	//Requerimiento de modelo speciality
-	var Speciality = require('../models/speciality');
-	//Requerimiento de modelo user
-	var User = require('../models/user');  
-	//Requerimiento de middleware access
-	var Access = require('../middlewares/access');   
+	var Friend = require('../models/friend');
+
 
 //OPERACIONES
 
 	// READ
 
 		// Operacion Read a toda la coleccion
-		router.route('/specialities')
+		router.route('/amigos')
 			.get(function(req,res){
 				// Obtener toda la coleccion specialities
-				Speciality.find()
-				.then( function(especialidades) {
+				Friend.find()
+				.then( function(friend) {
 					// Servir coleccion  
-					res.json(especialidades);
+					res.json(friend);
 				})
 			});
 
 		// Operacion Read a un registro en particular
-		router.route('/specialities/:nombre')
+		router.route('/amigos/:name')
 			.get(function(req,res){
 				// Obtencion de parametros de url
-				var nombre = req.params.nombre;
+				var name = req.params.name;
 				// Busqueda de resgitro particular
-				Speciality.findOne({nombre:nombre})
-				.then( function(especialidad) {
+				Friend.findOne({name:name})
+				.then( function(friend) {
 					// Servir registro
-					res.json(especialidad);  
+					res.json(friend);  
 				})
 			});
 
 	// CREATE
 
 		// Operacion Create en la coleccion
-		router.route('/specialities')
+		router.route('/amigos')
 			.post(function(req,res){
 				console.log(req.body);
 				// Obtencion de variables del body
-				var nombre = req.body.nombre;
-				var imagen = req.body.imagen;
+				var name = req.body.name;
+				var surName = req.body.surName;
 				// Creacion de un nuevo registro de especialidad
-				var especialidad = new Speciality({ 
-					nombre: nombre, 
-					imagen: imagen 
+				var friend = new Friend({ 
+					name: name, 
+					surName: surName 
 				})
 				// Almacenamiento del registro en la base de datos
-				especialidad.save(function(err) {
+				friend.save(function(err) {
 					if (err) {
 						// Si hay un error al momento de guardar el registro 
 						//nos muestra succes:false y cual fue el error 
@@ -64,7 +61,7 @@
 					} else {
 						// Si el registro se completo sin errores 
 						// nos devuelve succes:true y el registro creado
-						res.json({success:true,especialidad:especialidad});
+						res.json({success:true,friend:friend});
 					}
 				})
 			});
@@ -72,28 +69,21 @@
 	// UPDATE
 
 		// Operacion Update de un registro en particular
-		router.route('/specialities/:nombre')
-			.put(Access, function(req,res){
+		router.route('/amigos/:name')
+			.put(function(req,res){
 				// Obtencion de parametros de url
-				var nombre = req.params.nombre;
+				var name = req.params.name;
 				// Obtencion de variables del body
-				var new_nombre = req.body.nombre;
-				var new_imagen = req.body.imagen;
+				var new_name = req.body.name;
+				var new_surName = req.body.surName;
 				// Busqueda del registro por su nombre unico
-				Speciality.findOne({nombre:nombre})
-				.then( function(especialidad) {
+				Friend.findOne({name:name})
+				.then( function(friend) {
 					// Si hay actualizacion en el nombre
-					if(new_nombre) {
-						// Remmplazamos el anterior varlor por el nuevo
-						especialidad.nombre = new_nombre;
-					} 
-					// Si hay actualizacion en la imagen 
-					if(new_imagen) {
-						// Remmplazamos el anterior varlor por el nuevo
-						especialidad.imagen = new_imagen;
-					}
+					(new_name) ? friend.name = new_name : null;
+					(new_surName) ? friend.surName = new_surName : null;
 					// Almacenamiento del registro en la base de datos
-					especialidad.save(function(err){
+					friend.save(function(err){
 						if(err) {
 							// Si hay un error al momento de guardar el registro 
 							//nos muestra succes:false y cual fue el error 
@@ -102,7 +92,7 @@
 						}else{
 							// Si el registro se completo sin errores 
 							// nos devuelve succes:true y el registro creado
-							res.json({success:true,especialidad:especialidad})
+							res.json({success:true,friend:friend})
 						}	
 					})
 				})
@@ -111,15 +101,15 @@
 	// DELETE
 
 		// Operacion Update de un registro en particular
-		router.route('/specialities/:nombre')
-			.delete(Access, function(req,res){
+		router.route('/amigos/:name')
+			.delete(function(req,res){
 				// Obtencion de parametros de url
-				var nombre = req.params.nombre;
+				var name = req.params.name;
 				// Busqueda del registro por su nombre unico
-				Speciality.findOne({nombre:nombre})
-				.then( function(especialidad) {
+				Friend.findOne({name:name})
+				.then( function(friend) {
 					// Eliminacion del registro
-					especialidad.remove(function(err){
+					friend.remove(function(err){
 						if(err) {
 							// Si hay un error al momento de guardar el registro 
 							//nos muestra succes:false y cual fue el error 

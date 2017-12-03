@@ -1,6 +1,6 @@
 
 // Direccion de la aplicacion
-var host = "https://apphackaton.herokuapp.com";
+var host = "https://hackspacem.herokuapp.com";
 // Listado de especialidades
 var app_especialidad = new Vue({
   el: '#app_especialidad',
@@ -39,7 +39,7 @@ var app_usuario = new Vue({
   created: function(){
     this.cargar_usuarios();
   },
-  methods: {
+  watch:{
     cargar_usuarios: function(){
       var config = {
         headers: {
@@ -52,6 +52,9 @@ var app_usuario = new Vue({
        app_usuario.usuarios = response.data;
       })
     },
+  },
+  methods: {
+    
     mostrar_formulario_agregar: function(){
       app_form.mostrar = true;
       app_form.titulo = "Nuevo Usuario";

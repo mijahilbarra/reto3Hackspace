@@ -1,15 +1,13 @@
 'use strict'
 
 //REQUERIMIENTO
-var router_main = require('../controllers/main.js');
-var router_speciality = require('../api/speciality.js');
-var router_user = require('../api/user.js');
+var router_main = require('../api/main.js');
+var router_friend = require('../api/friend.js');
 
 // RUTEO
 var routers = function(server) {
-	server.use('/', router_main);
-	server.use('/api/', router_speciality);
-	server.use('/api/', router_user);
+	server.use('/api/', router_main);
+	server.use('/api/', router_friend);
 };
 
 //EXPORTACION
